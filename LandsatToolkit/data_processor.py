@@ -2,8 +2,8 @@ import os
 import rasterio
 import numpy as np
 import datetime
-from .scene_operations import SceneOperations
-from .metadata_manager import MetadataManager
+from .scene_tools import SceneOperations
+from .metadata_tools import MetadataManager
 from .utils import create_output_folder
 
 class SatelliteDataProcessor:
@@ -24,12 +24,12 @@ class SatelliteDataProcessor:
 
         # Initialize sub-components for processing
         try:
-            self.scene_operations = SceneOperations(input_folder)
+            self.scene_tools = SceneOperations(input_folder)
         except Exception as e:
             raise RuntimeError(f"Failed to initialize SceneOperations: {e}")
 
         try:
-            self.metadata_manager = MetadataManager()
+            self.metadata_tools = MetadataManager()
         except Exception as e:
             raise RuntimeError(f"Failed to initialize MetadataManager: {e}")
 
@@ -61,8 +61,8 @@ class SatelliteDataProcessor:
             
             print(f"Organizing satellite data into: {output_folder}")
             
-            # Call the scene_operations method to organize the data
-            self.scene_operations.organize_satellite_data(output_folder)
+            # Call the scene_tools method to organize the data
+            self.scene_tools.organize_satellite_data(output_folder)
             print("Data organization complete.")
         
         except PermissionError as e:
@@ -105,7 +105,7 @@ class SatelliteDataProcessor:
                 indices = [indices]  # Convert a single string to a list
 
             # Group files by scene
-            all_scenes = self.scene_operations.group_files_by_scene()
+            all_scenes = self.scene_tools.group_files_by_scene()
 
             # Handle default scenes
             if scene_id is None:
@@ -130,7 +130,7 @@ class SatelliteDataProcessor:
 
                 try:
                     # Create band matrix for the scene
-                    matrix = self.scene_operations.create_band_matrices(scene)
+                    matrix = self.scene_tools.create_band_matrices(scene)
 
                     # Find the B4 file
                     B4 = None
@@ -145,7 +145,7 @@ class SatelliteDataProcessor:
                         continue  # Skip to the next scene
 
                     # Detect satellite type
-                    satellite_type = self.scene_operations.detect_satellite_type(B4)
+                    satellite_type = self.scene_tools.detect_satellite_type(B4)
 
                     # Calculate indices and save results
                     for index in indices:
@@ -154,7 +154,7 @@ class SatelliteDataProcessor:
                         output_file = os.path.join(scene_output_folder, f"{index}.tif")
 
                         # Use the updated calculate_and_save_index method
-                        self.scene_operations.calculate_and_save_index(
+                        self.scene_tools.calculate_and_save_index(
                             band_matrix=matrix,
                             index_type=index,
                             satellite_type=satellite_type,
@@ -203,7 +203,7 @@ class SatelliteDataProcessor:
 
             # Group files by scene
             try:
-                all_scenes = self.scene_operations.group_files_by_scene()  # Use SceneOperations to group files
+                all_scenes = self.scene_tools.group_files_by_scene()  # Use SceneOperations to group files
             except Exception as e:
                 print(f"Error grouping files by scene: {e}")
                 return
@@ -228,7 +228,7 @@ class SatelliteDataProcessor:
                 # Extract metadata using MetadataManager
                 try:
                     print(f"Extracting metadata for scene: {sid}...")
-                    self.metadata_manager.extract_metadata(scene_output_folder, sid, self.input_folder)
+                    self.metadata_tools.extract_metadata(scene_output_folder, sid, self.input_folder)
                     print(f"Metadata extracted and saved for scene: {sid}")
                 except FileNotFoundError as e:
                     print(f"FileNotFoundError while extracting metadata for scene '{sid}': {e}")
@@ -277,7 +277,7 @@ class SatelliteDataProcessor:
 
             # Group files by scene
             try:
-                all_scenes = self.scene_operations.group_files_by_scene()
+                all_scenes = self.scene_tools.group_files_by_scene()
             except Exception as e:
                 print(f"Error grouping files by scene: {e}")
                 return
@@ -303,7 +303,7 @@ class SatelliteDataProcessor:
                     os.makedirs(scene_output_folder, exist_ok=True)
 
                     # Reproject all raster files for the scene
-                    self.scene_operations.reproject_scene(
+                    self.scene_tools.reproject_scene(
                         scene_id=sid,
                         target_crs=target_crs,
                         output_folder=scene_output_folder
@@ -352,7 +352,7 @@ class SatelliteDataProcessor:
 
             # Group files by scene
             try:
-                all_scenes = self.scene_operations.group_files_by_scene()
+                all_scenes = self.scene_tools.group_files_by_scene()
             except Exception as e:
                 print(f"Error grouping files by scene: {e}")
                 return
@@ -439,7 +439,7 @@ class SatelliteDataProcessor:
 
         try:
             # Use SceneOperations to group files by scene
-            all_scenes = self.scene_operations.group_files_by_scene()
+            all_scenes = self.scene_tools.group_files_by_scene()
 
             # Check if there are any scenes
             if not all_scenes:
