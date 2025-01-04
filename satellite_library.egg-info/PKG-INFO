@@ -2,10 +2,10 @@ Metadata-Version: 2.1
 Name: satellite_library
 Version: 1.0.0
 Summary: A Python library for processing and analyzing satellite data.
-Home-page: https://github.com/yourusername/satellite-library
+Home-page: https://github.com/AmirDonyadide/SATELLITE_LIBRARY
 Author: Amirhossein Donyadidegan, Mohammad Kord Gholiabadi
-Author-email: amirhossein.donyadidegan@mail.polimi.it, author2@example.com
-Keywords: satellite processing,remote sensing,GIS,raster data
+Author-email: amirhossein.donyadidegan@mail.polimi.it, mohammad.kordgholiabad@mail.polimi.it
+Keywords: satellite processing,remote sensing,GIS,raster data,satellite imagery,Landsat,Sentinel
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent

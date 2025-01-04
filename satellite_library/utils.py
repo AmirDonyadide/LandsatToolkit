@@ -1,11 +1,10 @@
-# utils.py
+import os
 
 # Constants
 """
 Stores all constant values used across the library.
 """
 
-# Example constants (from constants.py)
 DEFAULT_CRS = "EPSG:4326"  # Default Coordinate Reference System
 SUPPORTED_INDICES = ["NDVI", "NDBI", "NDWI", "SAVI"]  # List of supported indices
 DEFAULT_RESAMPLING_METHOD = "nearest"  # Default resampling method for reprojection
@@ -15,8 +14,6 @@ DEFAULT_RESAMPLING_METHOD = "nearest"  # Default resampling method for reproject
 """
 Provides utility functions used across the library.
 """
-
-import os
 
 def create_output_folder(base_folder_name):
     """
@@ -28,10 +25,18 @@ def create_output_folder(base_folder_name):
     Returns:
         str: Path to the created folder.
     """
-    folder_name = f"{base_folder_name}"
-    folder_path = os.path.join(os.getcwd(), folder_name)
-    os.makedirs(folder_path, exist_ok=True)
-    return folder_path
+    try:
+        folder_name = f"{base_folder_name}"
+        folder_path = os.path.join(os.getcwd(), folder_name)
+        os.makedirs(folder_path, exist_ok=True)
+        print(f"Output folder created: {folder_path}")
+        return folder_path
+    except PermissionError:
+        print(f"Permission denied while creating folder: {folder_name}")
+        raise
+    except Exception as e:
+        print(f"Error creating output folder '{base_folder_name}': {e}")
+        raise
 
 def validate_file_extension(file_name, valid_extensions):
     """
@@ -44,7 +49,14 @@ def validate_file_extension(file_name, valid_extensions):
     Returns:
         bool: True if the file has a valid extension, False otherwise.
     """
-    return any(file_name.lower().endswith(ext) for ext in valid_extensions)
+    try:
+        is_valid = any(file_name.lower().endswith(ext) for ext in valid_extensions)
+        if not is_valid:
+            print(f"Invalid file extension for file: {file_name}")
+        return is_valid
+    except Exception as e:
+        print(f"Error validating file extension for '{file_name}': {e}")
+        raise
 
 def format_scene_list(scene_list):
     """
@@ -56,4 +68,11 @@ def format_scene_list(scene_list):
     Returns:
         str: Formatted string representation of the scene list.
     """
-    return "\n".join(f"- {scene}" for scene in scene_list)
+    try:
+        if not scene_list:
+            return "No scenes available."
+        formatted_list = "\n".join(f"- {scene}" for scene in scene_list)
+        return formatted_list
+    except Exception as e:
+        print(f"Error formatting scene list: {e}")
+        raise
