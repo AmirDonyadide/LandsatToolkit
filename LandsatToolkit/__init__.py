@@ -1,5 +1,5 @@
 """
-Satellite Library
+LandsatToolkit
 =================
 A Python library for satellite data processing, including scene processing,
 index calculation, metadata extraction, and utility functions.
@@ -10,7 +10,7 @@ try:
     from .satellite_data_processor import SatelliteDataProcessor
     from .scene_operations import SceneOperations
     from .metadata_manager import MetadataManager
-    from .utils import DEFAULT_CRS, SUPPORTED_INDICES, create_output_folder, validate_file_extension
+    from .utils import DEFAULT_CRS, SUPPORTED_INDICES, create_output_folder
 except ImportError as e:
     print(f"Error importing modules in satellite_library: {e}")
     raise
@@ -23,7 +23,6 @@ __all__ = [
     "DEFAULT_CRS",
     "SUPPORTED_INDICES",
     "create_output_folder",
-    "validate_file_extension",
 ]
 
 # Validate imports

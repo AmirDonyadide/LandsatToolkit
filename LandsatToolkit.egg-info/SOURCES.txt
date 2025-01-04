@@ -1,0 +1,15 @@
+.DS_Store
+LICENSE
+README.md
+VERSION
+setup.py
+LandsatToolkit/__init__.py
+LandsatToolkit/metadata_manager.py
+LandsatToolkit/satellite_data_processor.py
+LandsatToolkit/scene_operations.py
+LandsatToolkit/utils.py
+LandsatToolkit.egg-info/PKG-INFO
+LandsatToolkit.egg-info/SOURCES.txt
+LandsatToolkit.egg-info/dependency_links.txt
+LandsatToolkit.egg-info/requires.txt
+LandsatToolkit.egg-info/top_level.txt

@@ -4,7 +4,6 @@ class MetadataManager:
     """
     Handles metadata extraction and parsing for satellite data.
     """
-
     def extract_metadata(self, output_folder, scene_id, input_folder):
         """
         Extract metadata for a specific scene and save to the output folder.
