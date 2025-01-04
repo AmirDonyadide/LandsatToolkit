@@ -227,16 +227,17 @@ class SceneOperations:
         except Exception as e:
             print(f"An unexpected error occurred while creating band matrices: {e}")
 
-    def calculate_and_save_index(self, band_matrix, index_type, satellite_type, output_file, B4=None):
+    def calculate_and_save_index(self, band_matrix, index_type, satellite_type, output_file, B4=None, L=0.5):
         """
-        Calculates an index for a given band matrix and saves it to a GeoTIFF file.
+        Calculates a normalized difference index for a given band matrix and saves it to a GeoTIFF file.
 
         Args:
             band_matrix (np.ndarray): 3D NumPy array of band data.
-            index_type (str): Type of index to calculate (e.g., "NDVI", "NDWI").
+            index_type (str): Type of index to calculate (e.g., "NDVI", "NDWI", "NDBI", "SAVI").
             satellite_type (str): Satellite type (e.g., "landsat7").
             output_file (str): Path to save the calculated index.
-            B4 (str): Path to B4 file for specific calculations.
+            B4 (str): Path to B4 file for metadata reference.
+            L (float, optional): Soil adjustment factor for SAVI. Default is 0.5.
 
         Returns:
             None
@@ -249,18 +250,27 @@ class SceneOperations:
         try:
             print(f"Calculating {index_type} for satellite type {satellite_type}...")
 
-            # Select the calculation method based on index type
-            if index_type == "NDVI":
-                index = self.calculate_ndvi(band_matrix)
-            elif index_type == "NDWI":
-                index = self.calculate_ndwi(band_matrix)
-            elif index_type == "NDBI":
-                index = self.calculate_ndbi(band_matrix)
-            elif index_type == "SAVI":
-                index = self.calculate_savi(band_matrix)
+            # Check if the index is supported and call `normalized_difference`
+            if index_type in ["NDVI", "NDWI", "NDBI", "SAVI"]:
+                band_indices = {
+                    "NDVI": (4, 3),  # NIR, RED
+                    "NDWI": (2, 4),  # GREEN, NIR
+                    "NDBI": (5, 4),  # SWIR, NIR
+                    "SAVI": (4, 3),  # NIR, RED
+                }
+                numerator_band, denominator_band = band_indices[index_type]
+                
+                # Pass the L value only if the index is SAVI
+                index = self.normalized_difference(
+                    matrix=band_matrix,
+                    numerator_band=numerator_band,
+                    denominator_band=denominator_band,
+                    index_type=index_type,
+                    L=L if index_type == "SAVI" else None,
+                )
             else:
                 raise ValueError(f"Unsupported index type: {index_type}")
-
+            
             # Validate the B4 reference file
             if B4 is None or not os.path.isfile(B4):
                 raise FileNotFoundError(f"B4 reference file not found or invalid: {B4}")
@@ -280,165 +290,62 @@ class SceneOperations:
 
         except ValueError as ve:
             print(f"ValueError: {ve}")
+            raise
         except FileNotFoundError as fnf_error:
             print(f"FileNotFoundError: {fnf_error}")
+            raise
         except Exception as e:
             print(f"An unexpected error occurred while calculating or saving the index: {e}")
+            raise
 
-    def calculate_ndvi(self, matrix):
+    def normalized_difference(self, matrix, numerator_band, denominator_band, index_type, L=0.5):
         """
-        Calculates the NDVI (Normalized Difference Vegetation Index).
-
-        NDVI is calculated as:
-            NDVI = (NIR - RED) / (NIR + RED)
+        Calculates a normalized difference index for specified bands and standardizes values for each pixel.
 
         Args:
-            matrix (np.ndarray): 3D NumPy array where bands are stacked along the first dimension.
-                                 - Band 5 is assumed to be NIR (Near-Infrared).
-                                 - Band 4 is assumed to be RED.
+            matrix (np.ndarray): 3D NumPy array with band data.
+            numerator_band (int): Index of the numerator band.
+            denominator_band (int): Index of the denominator band.
+            index_type (str): Type of index (e.g., NDVI, NDWI, NDBI, SAVI).
+            L (float, optional): Soil adjustment factor for SAVI, default is 0.5.
 
         Returns:
-            np.ndarray: A 2D NumPy array representing NDVI values, where invalid values are replaced with 0.
+            np.ndarray: Normalized difference index values clipped to the expected range.
         """
         try:
-            # Validate the input matrix dimensions
-            if matrix.ndim != 3 or matrix.shape[0] < 5:
-                raise ValueError("Input matrix must be a 3D array with at least 5 bands (NIR and RED).")
+            numerator = matrix[numerator_band]
+            denominator = matrix[denominator_band]
 
-            nir = matrix[4]  # Assuming Band 5 is NIR
-            red = matrix[3]  # Assuming Band 4 is RED
+            # Handle SAVI calculation
+            if index_type == "SAVI":
+                with np.errstate(divide="ignore", invalid="ignore"):
+                    index = ((numerator - denominator) / (numerator + denominator + L)) * (1 + L)
+                    index = np.where(np.isfinite(index), index, 0)  # Replace NaN or Inf with 0
+            else:
+                # Handle other normalized difference calculations
+                with np.errstate(divide="ignore", invalid="ignore"):
+                    index = (numerator - denominator) / (numerator + denominator)
+                    index = np.where(np.isfinite(index), index, 0)  # Replace NaN or Inf with 0
 
-            # Handle division by zero and invalid operations
-            with np.errstate(divide='ignore', invalid='ignore'):
-                ndvi = (nir - red) / (nir + red)
-                ndvi = np.where(np.isfinite(ndvi), ndvi, 0)  # Replace NaN or Inf with 0
+            # Standardize the values based on the index type
+            index_ranges = {
+                "NDVI": (-1, 1),  # NDVI range
+                "NDWI": (-1, 1),  # NDWI range
+                "NDBI": (-1, 1),  # NDBI range
+                "SAVI": (-1, 1),  # SAVI range (adjustable with L)
+            }
 
-            return ndvi
+            if index_type in index_ranges:
+                min_val, max_val = index_ranges[index_type]
+                index = np.clip(index, min_val, max_val)  # Clip values to the specified range
+            else:
+                print(f"Warning: No standardization range defined for index type {index_type}. Skipping clipping.")
 
-        except ValueError as ve:
-            print(f"ValueError in calculate_ndvi: {ve}")
-            raise
+            return index
         except Exception as e:
-            print(f"Unexpected error in calculate_ndvi: {e}")
+            print(f"Error calculating {index_type}: {e}")
             raise
-
-    def calculate_ndwi(self, matrix):
-        """
-        Calculates the NDWI (Normalized Difference Water Index).
-
-        NDWI is calculated as:
-            NDWI = (GREEN - NIR) / (GREEN + NIR)
-
-        Args:
-            matrix (np.ndarray): 3D NumPy array where bands are stacked along the first dimension.
-                                 - Band 3 is assumed to be GREEN.
-                                 - Band 5 is assumed to be NIR (Near-Infrared).
-
-        Returns:
-            np.ndarray: A 2D NumPy array representing NDWI values, where invalid values are replaced with 0.
-        """
-        try:
-            # Validate the input matrix dimensions
-            if matrix.ndim != 3 or matrix.shape[0] < 5:
-                raise ValueError("Input matrix must be a 3D array with at least 5 bands (NIR and GREEN).")
-
-            green = matrix[2]  # Assuming Band 3 is GREEN
-            nir = matrix[4]    # Assuming Band 5 is NIR
-
-            # Handle division by zero and invalid operations
-            with np.errstate(divide='ignore', invalid='ignore'):
-                ndwi = (green - nir) / (green + nir)
-                ndwi = np.where(np.isfinite(ndwi), ndwi, 0)  # Replace NaN or Inf with 0
-
-            return ndwi
-
-        except ValueError as ve:
-            print(f"ValueError in calculate_ndwi: {ve}")
-            raise
-        except Exception as e:
-            print(f"Unexpected error in calculate_ndwi: {e}")
-            raise
-
-    def calculate_ndbi(self, matrix):
-        """
-        Calculates the NDBI (Normalized Difference Built-up Index).
-
-        NDBI is calculated as:
-            NDBI = (SWIR - NIR) / (SWIR + NIR)
-
-        Args:
-            matrix (np.ndarray): 3D NumPy array where bands are stacked along the first dimension.
-                                 - Band 6 is assumed to be SWIR (Short-Wave Infrared).
-                                 - Band 5 is assumed to be NIR (Near-Infrared).
-
-        Returns:
-            np.ndarray: A 2D NumPy array representing NDBI values, where invalid values are replaced with 0.
-        """
-        try:
-            # Validate the input matrix dimensions
-            if matrix.ndim != 3 or matrix.shape[0] < 6:
-                raise ValueError("Input matrix must be a 3D array with at least 6 bands (SWIR and NIR).")
-
-            swir = matrix[5]  # Assuming Band 6 is SWIR
-            nir = matrix[4]   # Assuming Band 5 is NIR
-
-            # Handle division by zero and invalid operations
-            with np.errstate(divide='ignore', invalid='ignore'):
-                ndbi = (swir - nir) / (swir + nir)
-                ndbi = np.where(np.isfinite(ndbi), ndbi, 0)  # Replace NaN or Inf with 0
-
-            return ndbi
-
-        except ValueError as ve:
-            print(f"ValueError in calculate_ndbi: {ve}")
-            raise
-        except Exception as e:
-            print(f"Unexpected error in calculate_ndbi: {e}")
-            raise
-
-    def calculate_savi(self, matrix, L=0.5):
-        """
-        Calculates the SAVI (Soil-Adjusted Vegetation Index).
-
-        SAVI is calculated as:
-            SAVI = ((NIR - RED) / (NIR + RED + L)) * (1 + L)
-
-        Args:
-            matrix (np.ndarray): 3D NumPy array where bands are stacked along the first dimension.
-                                 - Band 5 is assumed to be NIR (Near-Infrared).
-                                 - Band 4 is assumed to be RED.
-            L (float, optional): Soil adjustment factor, typically ranging between 0 and 1.
-                                 Default is 0.5.
-
-        Returns:
-            np.ndarray: A 2D NumPy array representing SAVI values, where invalid values are replaced with 0.
-        """
-        try:
-            # Validate the input matrix dimensions
-            if matrix.ndim != 3 or matrix.shape[0] < 5:
-                raise ValueError("Input matrix must be a 3D array with at least 5 bands (NIR and RED).")
-
-            if not (0 <= L <= 1):
-                raise ValueError("The soil adjustment factor L must be between 0 and 1.")
-
-            # Extract NIR (Band 5) and RED (Band 4) bands
-            nir = matrix[4]  # Assuming Band 5 is NIR
-            red = matrix[3]  # Assuming Band 4 is RED
-
-            # Handle division by zero and invalid operations
-            with np.errstate(divide='ignore', invalid='ignore'):
-                savi = ((nir - red) / (nir + red + L)) * (1 + L)
-                savi = np.where(np.isfinite(savi), savi, 0)  # Replace NaN or Inf with 0
-
-            return savi
-
-        except ValueError as ve:
-            print(f"ValueError in calculate_savi: {ve}")
-            raise
-        except Exception as e:
-            print(f"Unexpected error in calculate_savi: {e}")
-            raise
-    
+            
     def reproject_scene(self, scene_id, target_crs, output_folder):
         """
         Reprojects all raster files in a scene to a specified CRS.
@@ -482,8 +389,9 @@ class SceneOperations:
                             "height": height,
                         })
 
-                        # Create the output file path
-                        output_file = os.path.join(output_folder, os.path.basename(file_path))
+                        # Create the output file path with "_reprojected" suffix
+                        file_name, file_extension = os.path.splitext(os.path.basename(file_path))
+                        output_file = os.path.join(output_folder, f"{file_name}_reprojected{file_extension}")
                         os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
                         # Perform reprojection

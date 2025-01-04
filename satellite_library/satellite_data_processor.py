@@ -72,7 +72,7 @@ class SatelliteDataProcessor:
         except Exception as e:
             print(f"An unexpected error occurred during data organization: {e}")
 
-    def indice_calculator(self, output_folder=None, indices=None, scene_id=None):
+    def indice_calculator(self, output_folder=None, indices=None, scene_id=None, L=None):
         """
         Calculate indices for specific scenes and save to the specified output folder.
 
@@ -114,6 +114,12 @@ class SatelliteDataProcessor:
             elif isinstance(scene_id, str):
                 scene_id = [scene_id]  # Convert a single string to a list
 
+            if L is None:
+                L = 0.5
+                print(f"No L value for SAVI specified. Using default value: {L}")
+            else:
+                L = float(L)
+                
             # Process each scene
             for scene in scene_id:
                 if scene not in all_scenes:
@@ -132,7 +138,7 @@ class SatelliteDataProcessor:
                         if "_SR_B4" in file.upper():
                             B4 = file
                             break
-                    
+
                     # Check if B4 is found
                     if not B4:
                         print(f"B4 reference file not found for scene {scene}. Available files: {all_scenes[scene]}")
@@ -146,13 +152,15 @@ class SatelliteDataProcessor:
                         scene_output_folder = os.path.join(output_folder, scene)
                         os.makedirs(scene_output_folder, exist_ok=True)
                         output_file = os.path.join(scene_output_folder, f"{index}.tif")
-                        
+
+                        # Use the updated calculate_and_save_index method
                         self.scene_operations.calculate_and_save_index(
                             band_matrix=matrix,
                             index_type=index,
                             satellite_type=satellite_type,
                             output_file=output_file,
-                            B4=B4
+                            B4=B4,
+                            L=L if index == "SAVI" else None  # Pass L only if the index is SAVI
                         )
                         print(f"Saved {index} for scene {scene} to {output_file}")
 
