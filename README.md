@@ -1,129 +1,149 @@
-# Satellite Library
+# LandsatToolkit
 
-A Python library for processing and analyzing satellite data. This library provides tools for organizing, reprojecting, creating band matrices, calculating indices (e.g., NDVI, NDWI, SAVI), and extracting metadata from satellite imagery.
+![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+**LandsatToolkit** is a powerful Python library for processing and analyzing satellite data from **Landsat 7, 8, and 9**. Designed with ease of use in mind, the library offers a comprehensive suite of tools to handle metadata, process satellite images, and perform advanced scene operations, making it an essential tool for Earth observation and geospatial analysis projects.
 
 ---
 
 ## Features
-- Organize satellite data by scenes and satellite types.
-- Reproject raster files to a specified coordinate reference system (CRS).
-- Calculate popular remote sensing indices like NDVI, NDWI, SAVI, and more.
-- Parse and export metadata from satellite files.
-- Supports Landsat 7, Landsat 8, and Landsat 9 satellite data.
+
+- **Metadata Management**:
+  - Extract metadata from Landsat imagery files.
+  - Parse and manipulate metadata for easy integration into workflows.
+- **Satellite Data Processing**:
+  - Preprocess Landsat data, including calibration and rescaling.
+  - Support for band extraction and composition.
+- **Scene Operations**:
+  - Perform calculations such as NDVI (Normalized Difference Vegetation Index).
+  - Create band combinations for visualizations (e.g., True Color, False Color).
+  - Apply scene-based adjustments like cloud masking.
+- **Utility Functions**:
+  - General-purpose helper functions to simplify file management, data formatting, and other repetitive tasks.
+- **Compatibility**:
+  - Works seamlessly with data from Landsat 7, 8, and 9.
 
 ---
 
 ## Installation
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/yourusername/satellite-library.git
-   cd satellite-library
+You can install **LandsatToolkit** via pip. Ensure you have Python 3.7 or above installed.
 
-	2.	Install via pip:
+```bash
+pip install landsat-toolkit
+```
 
-pip install .
+---
 
+## Getting Started
 
-	3.	Install Development Dependencies (optional):
+### Importing the Library
 
-pip install .[dev]
+Start by importing the required modules from the library:
 
-Quick Start
+```python
+from LandsatToolkit import metadata_manager, satellite_data_processor, scene_operations, utils
+```
 
-1. Organize Satellite Data
+### Example Usage
 
-Organize raw satellite files into directories by scene and satellite type.
+#### Extract Metadata
+```python
+from LandsatToolkit import metadata_manager
 
-from satellite_library.satellite_data_processor import SatelliteDataProcessor
+# Extract metadata from a Landsat file
+metadata = metadata_manager.extract_metadata("path/to/Landsat/file")
+print(metadata)
+```
 
-processor = SatelliteDataProcessor(input_folder="data/raw", output_folder="data/organized")
-processor.organize_data()
+#### Process Satellite Data
+```python
+from LandsatToolkit import satellite_data_processor
 
-2. Reproject and Process Scenes
+# Preprocess a Landsat image
+processed_data = satellite_data_processor.process("path/to/Landsat/image")
+```
 
-Reproject raster files, create band matrices, and calculate indices like NDVI.
+#### Perform Scene Operations
+```python
+from LandsatToolkit import scene_operations
 
-processor.process_all_scenes(target_crs="EPSG:32633", indices=["NDVI", "NDWI"])
+# Calculate NDVI from a Landsat image
+ndvi = scene_operations.calculate_ndvi("path/to/Landsat/image")
+print("NDVI calculation complete.")
+```
 
-3. Extract Metadata
+#### Use Utility Functions
+```python
+from LandsatToolkit import utils
 
-Parse and save metadata for all scenes.
+# Example: Reformat file paths
+formatted_path = utils.format_path("path/to/file")
+print(formatted_path)
+```
 
-processor.extract_metadata()
+---
 
-Example Code
+## Project Structure
 
-A complete example of processing satellite data:
+Here’s an overview of the directory structure:
 
-from satellite_library.satellite_data_processor import SatelliteDataProcessor
-
-# Initialize the processor
-processor = SatelliteDataProcessor(
-    input_folder="data/raw",
-    output_folder="data/processed"
-)
-
-# Organize files
-processor.organize_data()
-
-# Reproject and calculate NDVI and NDWI
-processor.process_all_scenes(target_crs="EPSG:32633", indices=["NDVI", "NDWI"])
-
-# Extract metadata
-processor.extract_metadata()
-
-Supported Indices
-	•	NDVI: Normalized Difference Vegetation Index
-	•	NDWI: Normalized Difference Water Index
-	•	SAVI: Soil-Adjusted Vegetation Index
-	•	NDBI: Normalized Difference Built-Up Index
-	•	EVI: Enhanced Vegetation Index
-	•	MNDWI: Modified Normalized Difference Water Index
-
-File Structure
-
-Your folder structure might look like this:
-
-SATELLITE_LIBRARY/
-├── satellite_library/
+```
+LandsatToolkit/
+├── LandsatToolkit/
 │   ├── __init__.py
-│   ├── index_calculator.py
-│   ├── metadata_manager.py
-│   ├── satellite_data_processor.py
-│   ├── scene_processor.py
-│   └── utils/
-│       ├── __init__.py
-│       ├── constants.py
-│       └── helper_functions.py
-├── examples/
-│   ├── process_scene.py
-│   └── calculate_indices.py
-├── tests/
-│   ├── test_index_calculator.py
-│   ├── test_metadata_manager.py
-│   ├── test_scene_processor.py
-├── LICENSE
-├── README.md
-├── setup.py
-└── VERSION
+│   ├── metadata_manager.py         # Functions for metadata extraction
+│   ├── satellite_data_processor.py # Modules for Landsat image preprocessing
+│   ├── scene_operations.py         # Scene-based operations like NDVI calculation
+│   ├── utils.py                    # General utility functions
+├── LICENSE                         # MIT License details
+├── README.md                       # Project documentation
+├── VERSION                         # Current version of the library
+├── setup.py                        # Installation script
+```
 
-Contributing
+---
 
-We welcome contributions! To contribute:
-	1.	Fork the repository.
-	2.	Create a feature branch (git checkout -b feature-name).
-	3.	Commit your changes (git commit -m "Add feature name").
-	4.	Push to the branch (git push origin feature-name).
-	5.	Create a pull request.
+## Versioning
 
-License
+This project follows [Semantic Versioning](https://semver.org/).  
+Current version: **1.1.2**
 
-This library is licensed under the MIT License. See the LICENSE file for details.
+---
 
-Contact
+## Roadmap
 
-For questions, issues, or feature requests:
-	•	Author One: author1@example.com
-	•	Author Two: author2@example.com
-	•	GitHub Issues: Open an Issue
+Planned features and updates include:
+
+- Adding support for Landsat 5 and earlier datasets.
+- Incorporating machine learning models for cloud detection and land cover classification.
+- Expanding scene operations to include more vegetation and water indices.
+- Developing an interactive visualization module for Landsat data.
+
+---
+
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements or additional features, feel free to open an issue or submit a pull request.
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request detailing your changes.
+
+---
+
+## License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
+
+---
+
+## Contact
+
+If you have any questions or need support, feel free to reach out:
+
+- **GitHub Issues**: Open an issue in the repository.
+- **Email**: [your-email@example.com] (Replace with your email address if you want to include it.)
+
+---
