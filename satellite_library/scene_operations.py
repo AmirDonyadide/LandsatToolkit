@@ -80,7 +80,6 @@ class SceneOperations:
         Returns:
             dict: Dictionary with scene IDs as keys and lists of file paths as values.
         """
-        print("Grouping files by scene...")
         scenes = {}
         for file_name in os.listdir(self.input_folder):
             if file_name.startswith("."):
@@ -93,7 +92,6 @@ class SceneOperations:
             scene_id = "_".join(file_name.split("_")[:7])
             scenes.setdefault(scene_id, []).append(os.path.join(self.input_folder, file_name))
 
-        print(f"Grouped {len(scenes)} scenes.")
         return scenes
 
     def create_band_matrices(self, scene_id):
@@ -137,7 +135,6 @@ class SceneOperations:
         Returns:
             None
         """
-        print(f"Calculating {index_type} for satellite type {satellite_type}...")
 
         # Select the calculation method
         if index_type == "NDVI":
@@ -161,8 +158,6 @@ class SceneOperations:
             meta.update(count=1, dtype="float32")
             with rasterio.open(output_file, "w", **meta) as dst:
                 dst.write(index.astype("float32"), 1)
-
-        print(f"{index_type} saved to {output_file}.")
 
     def calculate_ndvi(self, matrix):
         """
