@@ -30,9 +30,4 @@ setup(
     ],
     python_requires=">=3.6",
     keywords="satellite processing, remote sensing, GIS, raster data",
-    project_urls={
-        "Bug Tracker": "https://github.com/yourusername/satellite-library/issues",
-        "Documentation": "https://github.com/yourusername/satellite-library/wiki",
-        "Source Code": "https://github.com/yourusername/satellite-library",
-    },
 )

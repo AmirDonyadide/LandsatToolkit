@@ -1,12 +1,13 @@
+.DS_Store
 LICENSE
 README.md
 VERSION
 setup.py
 satellite_library/__init__.py
-satellite_library/index_calculator.py
 satellite_library/metadata_manager.py
 satellite_library/satellite_data_processor.py
-satellite_library/scene_processor.py
+satellite_library/scene_operations.py
+satellite_library/utils.py
 satellite_library.egg-info/PKG-INFO
 satellite_library.egg-info/SOURCES.txt
 satellite_library.egg-info/dependency_links.txt
@@ -17,6 +18,3 @@ satellite_library/__pycache__/index_calculator.cpython-312.pyc
 satellite_library/__pycache__/metadata_manager.cpython-312.pyc
 satellite_library/__pycache__/satellite_data_processor.cpython-312.pyc
 satellite_library/__pycache__/scene_processor.cpython-312.pyc
-satellite_library/utils/__init__.py
-satellite_library/utils/constants.py
-satellite_library/utils/helper_functions.py

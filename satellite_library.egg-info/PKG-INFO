@@ -5,9 +5,6 @@ Summary: A Python library for processing and analyzing satellite data.
 Home-page: https://github.com/yourusername/satellite-library
 Author: Amirhossein Donyadidegan, Mohammad Kord Gholiabadi
 Author-email: amirhossein.donyadidegan@mail.polimi.it, author2@example.com
-Project-URL: Bug Tracker, https://github.com/yourusername/satellite-library/issues
-Project-URL: Documentation, https://github.com/yourusername/satellite-library/wiki
-Project-URL: Source Code, https://github.com/yourusername/satellite-library
 Keywords: satellite processing,remote sensing,GIS,raster data
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
