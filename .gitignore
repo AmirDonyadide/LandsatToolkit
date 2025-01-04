@@ -6,3 +6,6 @@ LandsatToolkit/.DS_Store
 
 # Ignore Python egg-info directory
 *.egg-info/
+
+# Ignore the folders starting with test_
+test_*/
