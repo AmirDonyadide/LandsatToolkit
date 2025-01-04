@@ -9,7 +9,6 @@ DEFAULT_CRS = "EPSG:4326"  # Default Coordinate Reference System
 SUPPORTED_INDICES = ["NDVI", "NDBI", "NDWI", "SAVI"]  # List of supported indices
 DEFAULT_RESAMPLING_METHOD = "nearest"  # Default resampling method for reprojection
 
-
 # Helper Functions
 """
 Provides utility functions used across the library.
