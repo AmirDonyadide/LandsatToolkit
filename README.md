@@ -105,31 +105,35 @@ data_folder.extract_metadata(output_folder="custom_metadata_folder", scene_id=sc
   - If not provided, metadata for all scenes in the `data_folder` will be extracted.
 
 
-#### Process Satellite Data
-```python
-from LandsatToolkit import satellite_data_processor
+#### Calculate Indices
 
-# Preprocess a Landsat image
-processed_data = satellite_data_processor.process("path/to/Landsat/image")
+You can calculate indices from Landsat scenes using the `indice_calculator` method. The method allows flexibility with parameters like `output_folder` , `indices` and `scene_id`.
+
+```python
+# Extract indices for all scenes and all indices (output folder will be created automatically)
+data_folder.indice_calculator()
+
+# Extract indices for a specific scene ID and all indices (output folder will be created automatically)
+data_folder.indice_calculator(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1")
+
+# Extract indice for multiple scene IDs with a custom output folder
+scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
+data_folder.extract_metadata(output_folder="custom_metadata_folder", indices=["NDVI, NDWI"],scene_id=scene_ids)
 ```
 
-#### Perform Scene Operations
-```python
-from LandsatToolkit import scene_operations
+##### Parameters:
+- `output_folder` *(optional, str)*:  
+  - Specifies the folder where extracted indices will be saved.  
+  - If not provided, a folder named `output_metadata_<timestamp>` will be created automatically in the current directory.
 
-# Calculate NDVI from a Landsat image
-ndvi = scene_operations.calculate_ndvi("path/to/Landsat/image")
-print("NDVI calculation complete.")
-```
+- `indices` *(optional, str or list of str)*:  
+  - A single indice or a list of indices to extract indice for.  
+  - If not provided, indices for all scenes in the `data_folder` will be extracted.
+  
+- `scene_id` *(optional, str or list of str)*:  
+  - A single scene ID or a list of scene IDs to extract metadata for.  
+  - If not provided, indices for all scenes in the `data_folder` will be extracted.
 
-#### Use Utility Functions
-```python
-from LandsatToolkit import utils
-
-# Example: Reformat file paths
-formatted_path = utils.format_path("path/to/file")
-print(formatted_path)
-```
 
 ---
 
