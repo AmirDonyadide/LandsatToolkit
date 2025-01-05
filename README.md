@@ -153,6 +153,33 @@ data_folder.organize_data(output_folder="custom_folder")
   - If not provided, a folder named `output_organized_<timestamp>` will be created automatically in the current directory.
 
 
+#### Reproject Bands
+
+You can reproject bands from Landsat scenes using the `reproject` method. The method allows flexibility with parameters like `output_folder` , `scene_id` and `target_crs`.
+
+```python
+# Reproject bands for all scenes (output folder will be created automatically)
+data_folder.reproject(target_crs="EPSG:32633")
+
+# Reproject bands for a specific scene ID (output folder will be created automatically)
+data_folder.reproject(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1",target_crs="EPSG:32633")
+
+# Extract indice for multiple scene IDs with a custom output folder
+scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
+data_folder.reproject(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1", scene_id=scene_id, target_crs="EPSG:32633")
+```
+
+##### Parameters:
+- `output_folder` *(optional, str)*:  
+  - Specifies the folder where extracted indices will be saved.  
+  - If not provided, a folder named `output_indices_<timestamp>` will be created automatically in the current directory.
+  
+- `scene_id` *(optional, str or list of str)*:  
+  - A single scene ID or a list of scene IDs to extract metadata for.  
+  - If not provided, indices for all scenes in the `data_folder` will be extracted.
+
+- `target_crs` *(str)*:  
+  - If not provided, appropriate error will be shown.
 ---
 
 
