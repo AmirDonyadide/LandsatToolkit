@@ -3,7 +3,7 @@
 ![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-**LandsatToolkit** is a powerful Python library for processing and analyzing satellite data from **Landsat 7, 8, and 9**. Designed with ease of use in mind, the library offers a comprehensive suite of tools to handle metadata, process satellite images, and perform advanced scene operations, making it an essential tool for Earth observation and geospatial analysis projects.
+**LandsatToolkit** is a versatile Python library designed to simplify the processing and analysis of satellite imagery from **Landsat 7, 8, and 9**. With an intuitive interface and robust functionality, it enables users to efficiently handle metadata, process imagery, and execute advanced scene operations. Whether you’re working on Earth observation, environmental monitoring, or geospatial analysis, LandsatToolkit provides the tools you need to unlock insights from satellite data with ease.
 
 ---
 
@@ -28,11 +28,35 @@
 
 ## Installation
 
-You can install **LandsatToolkit** via pip. Ensure you have Python 3.7 or above installed.
+To install **LandsatToolkit**, follow these steps:
 
-```bash
-pip install landsat-toolkit
-```
+1. **Clone the Repository**:  
+   Begin by cloning the repository from GitHub to your local machine.
+   ```bash
+   git clone https://github.com/AmirDonyadide/LandsatToolkit.git
+   ```
+
+2. **Activate the Appropriate Python Environment**:  
+   Open your terminal and activate the Python environment where you want to install the library.
+   ```bash
+   conda activate your_environment_name
+   # or, for virtualenv
+   source your_virtualenv/bin/activate
+   ```
+
+3. **Navigate to the Repository Folder**:  
+   Change the directory to the folder where the repository is located.
+   ```bash
+   cd LandsatToolkit
+   ```
+
+4. **Install the Library**:  
+   Use pip to install the library in editable mode.
+   ```bash
+   pip install -e .
+   ```
+
+After installation, you can import and use **LandsatToolkit** in your Python projects.
 
 ---
 
