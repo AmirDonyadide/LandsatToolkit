@@ -260,7 +260,7 @@ LandsatToolkit/
 
 ## Versioning
 
-Current version: **1.1.1**
+Current version: **1.0.0**
 
 ---
 
