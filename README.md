@@ -40,7 +40,8 @@ To install **LandsatToolkit**, follow these steps:
 
 ### **Online method**
 
-1. **Install via pip**:  
+1. **Install via pip**:
+     
    ```bash
    pip install LandsatToolkit
    ```
