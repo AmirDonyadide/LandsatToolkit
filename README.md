@@ -45,7 +45,7 @@ To install **LandsatToolkit**, follow these steps:
    ```bash
    pip install LandsatToolkit
    ```
-### **offline method**
+### **Offline method**
 
 1. **Clone the Repository**:  
    Begin by cloning the repository from GitHub to your local machine.
