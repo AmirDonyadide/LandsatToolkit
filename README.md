@@ -75,7 +75,7 @@ from LandsatToolkit.data_processor import SatelliteDataProcessor
 data_folder = SatelliteDataProcessor(input_folder="path/to/Landsat/files")
 ```
  #### Explanation:
-- **`input_folder`** *(str)*: The path to the folder containing raw Landsat data files.  
+- `input_folder` *(str)*: The path to the folder containing raw Landsat data files.  
 - The `SatelliteDataProcessor` instance is now ready to process raw data, extract metadata, and perform other operations on the provided data.
 
 
