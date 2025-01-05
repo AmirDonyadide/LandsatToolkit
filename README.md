@@ -92,7 +92,7 @@ data_folder.extract_metadata(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1"
 
 # Extract metadata for multiple scene IDs with a custom output folder
 scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
-data_folder.extract_metadata(output_folder="custom_metadata_folder", scene_id=scene_ids)
+data_folder.extract_metadata(output_folder="custom_folder", scene_id=scene_ids)
 ```
 
 ##### Parameters:
@@ -118,13 +118,13 @@ data_folder.indice_calculator(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1
 
 # Extract indice for multiple scene IDs with a custom output folder
 scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
-data_folder.extract_metadata(output_folder="custom_metadata_folder", indices=["NDVI, NDWI"],scene_id=scene_ids)
+data_folder.extract_metadata(output_folder="custom_folder", indices="NDVI" ,scene_id=scene_ids)
 ```
 
 ##### Parameters:
 - `output_folder` *(optional, str)*:  
   - Specifies the folder where extracted indices will be saved.  
-  - If not provided, a folder named `output_metadata_<timestamp>` will be created automatically in the current directory.
+  - If not provided, a folder named `output_indices_<timestamp>` will be created automatically in the current directory.
 
 - `indices` *(optional, str or list of str)*:  
   - A single indice or a list of indices to extract indice for.  
@@ -135,7 +135,26 @@ data_folder.extract_metadata(output_folder="custom_metadata_folder", indices=["N
   - If not provided, indices for all scenes in the `data_folder` will be extracted.
 
 
+#### Organize Data
+
+You can organize data from Landsat scenes using the `organize_data` method. The method allows flexibility with parameter like `output_folder` .
+
+```python
+# Organize files for all scenes (output folder will be created automatically)
+data_folder.organize_data()
+
+# Extract indices for a specific scene ID and all indices (output folder will be created automatically)
+data_folder.organize_data(output_folder="custom_folder")
+```
+
+##### Parameters:
+- `output_folder` *(optional, str)*:  
+  - Specifies the folder where extracted indices will be saved.  
+  - If not provided, a folder named `output_organized_<timestamp>` will be created automatically in the current directory.
+
+
 ---
+
 
 ## Project Structure
 
