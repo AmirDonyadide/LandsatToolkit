@@ -23,16 +23,16 @@
 
 ---
 
-## Installation
-
-### Requirements
+## Requirements
 
 Make sure the following libraries are installed in your Python environment:
-	•	numpy
-	•	shutil
-	•	os
-	•	unittest
-	•	Any other specific library (e.g., geospatial processing libraries) based on functionality
+- numpy
+-	shutil
+- rasterio
+
+---
+
+## Installation
 
 To install **LandsatToolkit**, follow these steps:
 
@@ -219,9 +219,7 @@ data_folder.merge_bands(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1", sce
 - `bands` *(optional, str or list of str)*: 
   - If not provided, all bands will be considered.
 
-
 ---
-
 
 ## Project Structure
 
