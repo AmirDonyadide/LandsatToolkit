@@ -8,16 +8,10 @@
 
 - **Metadata Management**:
   - Extract metadata from Landsat imagery files.
-  - Parse and manipulate metadata for easy integration into workflows.
 - **Satellite Data Processing**:
-  - Preprocess Landsat data, including calibration and rescaling.
-  - Support for band extraction and composition.
+  - Support for band composition.
 - **Scene Operations**:
   - Perform calculations such as NDVI (Normalized Difference Vegetation Index).
-  - Create band combinations for visualizations (e.g., True Color, False Color).
-  - Apply scene-based adjustments like cloud masking.
-- **Utility Functions**:
-  - General-purpose helper functions to simplify file management, data formatting, and other repetitive tasks.
 - **Compatibility**:
   - Works seamlessly with data from Landsat 7, 8, and 9.
 
@@ -45,7 +39,7 @@ To install **LandsatToolkit**, follow these steps:
    ```bash
    pip install LandsatToolkit
    ```
-### **offline method**
+### **Offline method**
 
 1. **Clone the Repository**:  
    Begin by cloning the repository from GitHub to your local machine.
@@ -260,7 +254,7 @@ LandsatToolkit/
 
 ## Versioning
 
-Current version: **1.1.1**
+Current version: **1.0.0**
 
 ---
 
