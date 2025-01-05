@@ -27,8 +27,10 @@
 
 Make sure the following libraries are installed in your Python environment:
 - numpy
--	shutil
 - rasterio
+-	shutil
+- datetime
+- os
 
 ---
 
