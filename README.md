@@ -72,31 +72,27 @@ from LandsatToolkit.data_processor import SatelliteDataProcessor
 
 #### Initialize the processor
 ```python
-data_folder = SatelliteDataProcessor(input_folder)
+data_folder = SatelliteDataProcessor(input_folder="path/to/Landsat/files")
 ```
- 
+ #### Explanation:
+- **`input_folder`** *(str)*: The path to the folder containing raw Landsat data files.  
+- The `SatelliteDataProcessor` instance is now ready to process raw data, extract metadata, and perform other operations on the provided data.
+
+
 #### Extract Metadata
 
 You can extract metadata from Landsat scenes using the `extract_metadata` method. The method allows flexibility with parameters like `output_folder` and `scene_id`.
 
 ```python
-from LandsatToolkit.metadata_tools import MetadataManager
-
-# Initialize the metadata manager
-metadata_manager = MetadataManager(data_folder="path/to/Landsat/files")
-
 # Extract metadata for all scenes (output folder will be created automatically)
-metadata = metadata_manager.extract_metadata()
-print(metadata)
+data_folder.extract_metadata()
 
 # Extract metadata for a specific scene ID (output folder will be created automatically)
-metadata = metadata_manager.extract_metadata(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1")
-print(metadata)
+data_folder.extract_metadata(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1")
 
 # Extract metadata for multiple scene IDs with a custom output folder
 scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
-metadata = metadata_manager.extract_metadata(output_folder="custom_metadata_folder", scene_id=scene_ids)
-print(metadata)
+data_folder.extract_metadata(output_folder="custom_metadata_folder", scene_id=scene_ids)
 ```
 
 ##### Parameters:
