@@ -289,6 +289,6 @@ If you have any questions or need support, feel free to reach out:
 
 - **GitHub Issues**: Open an issue in the repository.
 - **Email**: [amirhossein.donyadidegan@mail.polimi.it]
-- - **Email**: [mohammad.kordgholiabad@mail.polimi.it]
+- **Email**: [mohammad.kordgholiabad@mail.polimi.it]
 
 ---
