@@ -38,6 +38,14 @@ Make sure the following libraries are installed in your Python environment:
 
 To install **LandsatToolkit**, follow these steps:
 
+### **Online method**
+
+1. **Install via pip**:  
+   ```bash
+   pip install LandsatToolkit
+   ```
+### **offline method**
+
 1. **Clone the Repository**:  
    Begin by cloning the repository from GitHub to your local machine.
    ```bash
