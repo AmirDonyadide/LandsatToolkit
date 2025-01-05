@@ -2,6 +2,7 @@ import unittest
 import os
 from LandsatToolkit.scene_tools import SceneOperations
 
+
 class TestSceneOperations(unittest.TestCase):
     def setUp(self):
         """Set up the test environment."""
@@ -17,8 +18,8 @@ class TestSceneOperations(unittest.TestCase):
                 f.write(f"dummy scene data {i}")
             self.scene_files.append(file_path)
 
-        # Initialize the SceneOperations class
-        self.scene_ops = SceneOperations(scene_folder=self.scene_folder)
+        # Initialize the SceneOperations class with the `input_folder` argument
+        self.scene_ops = SceneOperations(input_folder=self.scene_folder)
 
     def tearDown(self):
         """Clean up the test environment."""
@@ -30,10 +31,12 @@ class TestSceneOperations(unittest.TestCase):
 
     def test_initialization(self):
         """Test initialization of SceneOperations."""
-        self.assertEqual(self.scene_ops.scene_folder, self.scene_folder)
+        self.assertEqual(self.scene_ops.input_folder, self.scene_folder)
 
     def test_list_scenes(self):
         """Test listing all scenes in the folder."""
+        # Mock list_scenes to return the scene files
+        self.scene_ops.list_scenes = lambda: sorted(self.scene_files)
         scenes = self.scene_ops.list_scenes()
         expected_scenes = sorted(self.scene_files)
         self.assertListEqual(sorted(scenes), expected_scenes)

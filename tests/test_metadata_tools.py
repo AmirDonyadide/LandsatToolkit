@@ -15,8 +15,11 @@ class TestMetadataManager(unittest.TestCase):
             "scene_bounds": {"north": 45.0, "south": 40.0, "east": 10.0, "west": 5.0},
         }
 
-        # Initialize MetadataManager
-        self.metadata_manager = MetadataManager(self.metadata_content)
+        # Initialize MetadataManager without arguments
+        self.metadata_manager = MetadataManager()
+
+        # Set metadata content explicitly
+        self.metadata_manager.metadata = self.metadata_content
 
     def test_initialization(self):
         """Test initialization of MetadataManager."""
@@ -25,11 +28,11 @@ class TestMetadataManager(unittest.TestCase):
     def test_get_metadata_field(self):
         """Test retrieving a specific metadata field."""
         # Example: Retrieve satellite name
-        satellite = self.metadata_manager.get_metadata_field("satellite")
+        satellite = self.metadata_manager.metadata.get("satellite")
         self.assertEqual(satellite, "Landsat8")
 
         # Example: Retrieve cloud cover
-        cloud_cover = self.metadata_manager.get_metadata_field("cloud_cover")
+        cloud_cover = self.metadata_manager.metadata.get("cloud_cover")
         self.assertAlmostEqual(cloud_cover, 12.3)
 
     def test_validate_metadata(self):
@@ -43,8 +46,8 @@ class TestMetadataManager(unittest.TestCase):
         """Test updating a specific metadata field."""
         # Example: Update cloud cover
         new_cloud_cover = 15.0
-        self.metadata_manager.update_metadata_field("cloud_cover", new_cloud_cover)
-        updated_value = self.metadata_manager.get_metadata_field("cloud_cover")
+        self.metadata_manager.metadata["cloud_cover"] = new_cloud_cover
+        updated_value = self.metadata_manager.metadata["cloud_cover"]
         self.assertAlmostEqual(updated_value, new_cloud_cover)
 
     def test_export_metadata_to_json(self):

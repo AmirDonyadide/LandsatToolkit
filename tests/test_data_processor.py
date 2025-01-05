@@ -27,7 +27,7 @@ class TestSatelliteDataProcessor(unittest.TestCase):
             shutil.rmtree(self.input_folder)
 
         # Remove any output folder created during testing
-        output_folder = os.path.join(self.input_folder, "processed")
+        output_folder = os.path.join(os.getcwd(), "processed")
         if os.path.exists(output_folder):
             shutil.rmtree(output_folder)
 
@@ -37,7 +37,8 @@ class TestSatelliteDataProcessor(unittest.TestCase):
 
     def test_generate_output_folder(self):
         """Test the generation of an output folder."""
-        output_folder = create_output_folder(self.input_folder, "processed")
+        output_folder_name = "processed"
+        output_folder = create_output_folder(output_folder_name)
         self.assertTrue(os.path.exists(output_folder))
         self.assertTrue(os.path.isdir(output_folder))
 
