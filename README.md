@@ -1,8 +1,5 @@
 # LandsatToolkit
 
-![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-
 **LandsatToolkit** is a versatile Python library designed to simplify the processing and analysis of satellite imagery from **Landsat 7, 8, and 9**. With an intuitive interface and robust functionality, it enables users to efficiently handle metadata, process imagery, and execute advanced scene operations. Whether you’re working on Earth observation, environmental monitoring, or geospatial analysis, LandsatToolkit provides the tools you need to unlock insights from satellite data with ease.
 
 ---
@@ -27,6 +24,15 @@
 ---
 
 ## Installation
+
+### Requirements
+
+Make sure the following libraries are installed in your Python environment:
+	•	numpy
+	•	shutil
+	•	os
+	•	unittest
+	•	Any other specific library (e.g., geospatial processing libraries) based on functionality
 
 To install **LandsatToolkit**, follow these steps:
 
@@ -225,10 +231,16 @@ Here’s an overview of the directory structure:
 LandsatToolkit/
 ├── LandsatToolkit/
 │   ├── __init__.py
-│   ├── metadata_manager.py         # Functions for metadata extraction
-│   ├── satellite_data_processor.py # Modules for Landsat image preprocessing
-│   ├── scene_operations.py         # Scene-based operations like NDVI calculation
+│   ├── data_processor.py           # Modules for Landsat image preprocessing
+│   ├── metadata_tools.py           # Functions for metadata extraction
+│   ├── scene_tools.py              # Scene-based operations like NDVI calculation
 │   ├── utils.py                    # General utility functions
+├── tests/
+│   ├── __init__.py
+│   ├── test_data_processor.py
+│   ├── test_metadata_tools.py
+│   ├── test_scene_tools.py
+│   ├── test_utils.py
 ├── LICENSE                         # MIT License details
 ├── README.md                       # Project documentation
 ├── VERSION                         # Current version of the library
@@ -239,8 +251,7 @@ LandsatToolkit/
 
 ## Versioning
 
-This project follows [Semantic Versioning](https://semver.org/).  
-Current version: **1.1.2**
+Current version: **1.1.1**
 
 ---
 
@@ -248,9 +259,7 @@ Current version: **1.1.2**
 
 Planned features and updates include:
 
-- Adding support for Landsat 5 and earlier datasets.
-- Incorporating machine learning models for cloud detection and land cover classification.
-- Expanding scene operations to include more vegetation and water indices.
+- Adding support for Sentinel 2 , Landsat 5 and earlier datasets.
 - Developing an interactive visualization module for Landsat data.
 
 ---
@@ -276,6 +285,6 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for m
 If you have any questions or need support, feel free to reach out:
 
 - **GitHub Issues**: Open an issue in the repository.
-- **Email**: [your-email@example.com] (Replace with your email address if you want to include it.)
+- **Email**: [amirhossein.donyadidegan@mail.polimi.it]
 
 ---
