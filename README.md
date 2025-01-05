@@ -164,7 +164,7 @@ data_folder.reproject(target_crs="EPSG:32633")
 # Reproject bands for a specific scene ID (output folder will be created automatically)
 data_folder.reproject(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1",target_crs="EPSG:32633")
 
-# Extract indice for multiple scene IDs with a custom output folder
+# Reproject bands for multiple scene IDs with a custom output folder
 scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
 data_folder.reproject(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1", scene_id=scene_id, target_crs="EPSG:32633")
 ```
@@ -180,6 +180,40 @@ data_folder.reproject(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1", scene
 
 - `target_crs` *(str)*:  
   - If not provided, appropriate error will be shown.
+
+
+#### Merge Bands
+
+You can merge bands from Landsat scenes using the `merge_bands` method. The method allows flexibility with parameters like `output_folder` , `scene_id` and `bands`.
+
+```python
+# Merge bands for all scenes and all bands (output folder will be created automatically)
+data_folder.merge_bands()
+
+# Merge bands for a specific scene ID and all bands (output folder will be created automatically)
+data_folder.merge_bands(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1")
+
+# Merge specific bands for all scenes(output folder will be created automatically)
+data_folder.merge_bands(bands=["B1", "B2", "B3"])
+
+# Merge bands for multiple scene IDs with a custom output folder and specific bands
+scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
+data_folder.merge_bands(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1", scene_id=scene_id, bands=["B1", "B2", "B3"])
+```
+
+##### Parameters:
+- `output_folder` *(optional, str)*:  
+  - Specifies the folder where extracted indices will be saved.  
+  - If not provided, a folder named `output_indices_<timestamp>` will be created automatically in the current directory.
+  
+- `scene_id` *(optional, str or list of str)*:  
+  - A single scene ID or a list of scene IDs to extract metadata for.  
+  - If not provided, indices for all scenes in the `data_folder` will be extracted.
+
+- `bands` *(optional, str or list of str)*: 
+  - If not provided, all bands will be considered.
+
+
 ---
 
 
