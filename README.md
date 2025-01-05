@@ -7,7 +7,7 @@
 
 ---
 
-## Features 1
+## Features
 
 - **Metadata Management**:
   - Extract metadata from Landsat imagery files.
@@ -40,8 +40,6 @@ To install **LandsatToolkit**, follow these steps:
    Open your terminal and activate the Python environment where you want to install the library.
    ```bash
    conda activate your_environment_name
-   # or, for virtualenv
-   source your_virtualenv/bin/activate
    ```
 
 3. **Navigate to the Repository Folder**:  
@@ -67,19 +65,49 @@ After installation, you can import and use **LandsatToolkit** in your Python pro
 Start by importing the required modules from the library:
 
 ```python
-from LandsatToolkit import metadata_manager, satellite_data_processor, scene_operations, utils
+from LandsatToolkit.data_processor import SatelliteDataProcessor
 ```
 
 ### Example Usage
 
-#### Extract Metadata
+#### Initialize the processor
 ```python
-from LandsatToolkit import metadata_manager
+data_folder = SatelliteDataProcessor(input_folder)
+```
+ 
+#### Extract Metadata
 
-# Extract metadata from a Landsat file
-metadata = metadata_manager.extract_metadata("path/to/Landsat/file")
+You can extract metadata from Landsat scenes using the `extract_metadata` method. The method allows flexibility with parameters like `output_folder` and `scene_id`.
+
+```python
+from LandsatToolkit.metadata_tools import MetadataManager
+
+# Initialize the metadata manager
+metadata_manager = MetadataManager(data_folder="path/to/Landsat/files")
+
+# Extract metadata for all scenes (output folder will be created automatically)
+metadata = metadata_manager.extract_metadata()
+print(metadata)
+
+# Extract metadata for a specific scene ID (output folder will be created automatically)
+metadata = metadata_manager.extract_metadata(scene_id="LC08_L1TP_034032_20230712_20230723_02_T1")
+print(metadata)
+
+# Extract metadata for multiple scene IDs with a custom output folder
+scene_ids = ["LC08_L1TP_034032_20230712_20230723_02_T1", "LC08_L1TP_034033_20230712_20230723_02_T1"]
+metadata = metadata_manager.extract_metadata(output_folder="custom_metadata_folder", scene_id=scene_ids)
 print(metadata)
 ```
+
+##### Parameters:
+- `output_folder` *(optional, str)*:  
+  - Specifies the folder where extracted metadata will be saved.  
+  - If not provided, a folder named `output_metadata_<timestamp>` will be created automatically in the current directory.
+  
+- `scene_id` *(optional, str or list of str)*:  
+  - A single scene ID or a list of scene IDs to extract metadata for.  
+  - If not provided, metadata for all scenes in the `data_folder` will be extracted.
+
 
 #### Process Satellite Data
 ```python
